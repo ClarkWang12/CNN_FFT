@@ -13,6 +13,7 @@ function net = cnntrainsparsity(net, x, y, opts)
             batch_y = y(:,    kk((l - 1) * opts.batchsize + 1 : l * opts.batchsize));
 
             net = cnnffsparsity(net, batch_x); %, batch_y);
+            
             if ~isfield(net,'dict')
                 net.dict=zeros(size(net.fv,1),size(batch_y,1));
             end
