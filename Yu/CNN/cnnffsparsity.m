@@ -4,7 +4,7 @@ function net = cnnffsparsity(net, x)  % y
     
     
     %net.layers{1}.a{1} = x;
-    %% ClarkWang 2017.02.15
+    %% ClarkWang 2017.02.15 Lab:TA3
     net.layers{1}.a{1} = gpuArray(x);
     
     for l=2:n
@@ -17,7 +17,7 @@ function net = cnnffsparsity(net, x)  % y
 %             for j = 1 : ndim(3)    %  for each output map
 %                 current(:,:,j) = fft2(net.layers{l-1}.a{k}(:,:,j));
 %             end
-            %% ClarkWang 2017.02.15
+            %% ClarkWang 2017.02.15 Lab:TA3
             current = fft2(net.layers{l-1}.a{k});
             
             temp = zeros(ndim);
