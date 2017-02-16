@@ -3,9 +3,9 @@ function net = cnnffsparsity(net, x)  % y
     inputmaps = 1;
     
     
-    %net.layers{1}.a{1} = x;
+    net.layers{1}.a{1} = x;
     %% ClarkWang 2017.02.15 Lab:TA3
-    net.layers{1}.a{1} = gpuArray(x);
+    %net.layers{1}.a{1} = gpuArray(x);
     
     for l=2:n
         ndim = size(net.layers{l-1}.a{1});
@@ -32,8 +32,13 @@ function net = cnnffsparsity(net, x)  % y
                     tmp(find(tmp<1.0e-4))=0;
                     temp(:,:,j)=tmp;
                 end
-                %net.layers{l}.a{(k-1)*floor(minN/2)+i}=temp;
-                net.layers{l}.a{(k-1)*floor(minN/2)+i}=gpuArray(temp);
+                
+                %% ClarkWang 2017.02.16 Home
+                net.layers{l}.a{(k-1)*floor(minN/2)+i}=temp;
+                
+                %% ClarkWang 2017.02.15 Lab:TA3
+                %net.layers{l}.a{(k-1)*floor(minN/2)+i}=gpuArray(temp);
+                
                 temp = temp*0;
             end
           end
@@ -64,8 +69,11 @@ function net = cnnffsparsity(net, x)  % y
                 [out, idx] = MaxPooling(net.layers{l-1}.a{k}, [2 2]);
                 %toc
                 
-                %net.layers{l}.a{k}=out;
-                net.layers{l}.a{k}=gpuArray(out);
+                %% ClarkWang 2017.02.16 Home
+                net.layers{l}.a{k}=out;
+                
+                %% ClarkWang 2017.02.15 Lab:TA3
+                %net.layers{l}.a{k}=gpuArray(out);
             end
         end
     end

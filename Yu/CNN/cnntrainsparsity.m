@@ -30,8 +30,8 @@ function net = cnntrainsparsity(net, x, y, opts)
     
 
     function fullyconnectionsparsity
-        select = @(A,k)repmat(A(k,:), [size(A,1) 1]);
-        ProjX = @(X,k)X .* (abs(X) >= select(sort(abs(X), 'descend'),k));
+        select = @(A,k) repmat(A(k,:), [size(A,1) 1]);
+        ProjX = @(X,k) X .* (abs(X) >= select(sort(abs(X), 'descend'),k));
 
         niter = 100; D = net.fv'; Yval=batch_y';
         gamma = 1.6/norm(D)^2; ksparse = floor(size(D,2)*0.5); % varying
