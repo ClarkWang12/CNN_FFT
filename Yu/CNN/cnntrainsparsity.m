@@ -17,7 +17,9 @@ function net = cnntrainsparsity(net, x, y, opts)
             if ~isfield(net,'dict')
                 net.dict=zeros(size(net.fv,1),size(batch_y,1));
             end
+            
             fullyconnectionsparsity;
+            
 %             net = cnnbp(net, batch_y);
 %             net = cnnapplygrads(net, opts);
             if isempty(net.rL)

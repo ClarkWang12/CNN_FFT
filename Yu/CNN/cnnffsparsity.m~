@@ -22,7 +22,7 @@ function net = cnnffsparsity(net, x)  % y
 %                 current(:,:,j) = fft2(net.layers{l-1}.a{k}(:,:,j));
 %             end
             %% ClarkWang 2017.02.15 Lab:TA3
-            current_fft_value = fft2(net.layers{l-1}.a{k});
+            fft_value = fft2(net.layers{l-1}.a{k});
             
             %% ClarkWang 2017.02.16 Lab:TA3
             template = gpuArray.zeros(ndim);
@@ -45,14 +45,15 @@ function net = cnnffsparsity(net, x)  % y
                 %net.layers{l}.a{(k-1)*floor(minN/2)+i}=temp;
                 
                 %% ClarkWang 2017.02.15 Lab:TA3
-                net.layers{l}.a{(k-1)*floor(minN/2)+i} = gpuArray(filtered_value);
+                net.layers{l}.a{(k-1)*floor(minN/2)+i} = gpuArray(temp);
                 
-                template = template*0;
+                temp = temp*0;
             end
           end
           inputmaps = inputmaps*floor(minN/2);
           % net.layers{l}.outputmaps = inputmaps;
         elseif strcmp(net.layers{l}.type, 's')
+            temp = zeros(floor(ndim(1)/2),floor(ndim(2)/2),ndim(3));
             for k=1:inputmaps
 %                 z = convn(net.layers{l - 1}.a{k}, ones(net.layers{l}.scale) / (net.layers{l}.scale ^ 2), 'valid');   %  !! replace with variable
 %                 net.layers{l}.a{k} = z(1 : net.layers{l}.scale : end, 1 : net.layers{l}.scale : end, :);
@@ -75,14 +76,14 @@ function net = cnnffsparsity(net, x)  % y
                 %tic
                 %[out, idx] = MaxPooling(net.layers{l-1}.a{k}, [2 2]);
                 ratio = 2;
-                [pooled_value, idx] = MaxPooling(single(gather(net.layers{l-1}.a{k})), single([ratio ratio]));
+                [out, idx] = MaxPooling(single(gather(net.layers{l-1}.a{k})), single([ratio ratio]));
                 %toc
                 
                 %% ClarkWang 2017.02.16 Home
                 %net.layers{l}.a{k}=out;
                 
                 %% ClarkWang 2017.02.15 Lab:TA3
-                net.layers{l}.a{k}=gpuArray(double(pooled_value));
+                net.layers{l}.a{k}=gpuArray(out);
             end
         end
     end
@@ -118,7 +119,8 @@ function net = cnnffsparsity(net, x)  % y
     %  concatenate all end layer feature maps into vector
     net.fv = [];
     for j = 1 : numel(net.layers{n}.a)
-        net.fv = [net.fv; reshape(net.layers{n}.a{j}, size(net.layers{n}.a{j}, 1) * size(net.layers{n}.a{j}, 2), size(net.layers{n}.a{j}, 3))];
+        sa = size(net.layers{n}.a{j});
+        net.fv = [net.fv; reshape(net.layers{n}.a{j}, sa(1) * sa(2), sa(3))];
     end
     
 %     select = @(A,k)repmat(A(k,:), [size(A,1) 1]);
