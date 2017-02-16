@@ -1,60 +1,10 @@
-% 
-% tic
-% clear A
-% for i = 1:80000000
-%    A(i) = i;
-% end
-% 
-% toc
-% 
-% tic
-% clear B
-% parfor i = 1:80000000
-%    B(i) = i;
-% end
-% 
-% toc
-
-
-
-
-clear C
-d = 0; i = 0;
-for i = 1:4
-   d = i*2;
-   C(i) = d;
-end
-C
-d
-i
-
-clear D
-d = 0; i = 0;
+A = zeros(4, 10);
 parfor i = 1:4
-   d = i*2;
-   D(i) = d;
+   for j = 1:10
+      if j < 6
+         A(i, j) = i + j;
+      else
+         A(i, j) = pi;
+      end
+   end
 end
-D
-d
-i
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
