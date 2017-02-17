@@ -12,9 +12,11 @@ function net = cnntrain(net, x, y, opts)
         disp(['num of batches = ' num2str(numbatches)])
         for l = 1 : numbatches
             %disp(['  ' num2str(l)])
+            tic
             batch_x = x(:, :, kk((l - 1) * opts.batchsize + 1 : l * opts.batchsize));
             batch_y = y(:,    kk((l - 1) * opts.batchsize + 1 : l * opts.batchsize));
 
+            
             net = cnnff(net, batch_x);
             
             net = cnnbp(net, batch_y);
@@ -24,6 +26,7 @@ function net = cnntrain(net, x, y, opts)
                 net.rL(1) = net.L;
             end
             net.rL(end + 1) = 0.99 * net.rL(end) + 0.01 * net.L;
+            toc
         end
         toc;
     end

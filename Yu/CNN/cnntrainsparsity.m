@@ -10,6 +10,7 @@ function net = cnntrainsparsity(net, x, y, opts)
         kk = randperm(m);
         for l = 1 : numbatches
             %disp(l)
+            tic
             batch_x = x(:, :, kk((l - 1) * opts.batchsize + 1 : l * opts.batchsize));
             batch_y = y(:,    kk((l - 1) * opts.batchsize + 1 : l * opts.batchsize));
 
@@ -29,7 +30,7 @@ function net = cnntrainsparsity(net, x, y, opts)
             else
                 net.rL(end + 1) = 0.99 * net.rL(end) + 0.01 * net.L;
             end
-            
+            toc
         end
     end
     
