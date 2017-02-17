@@ -9,7 +9,7 @@ function net = cnntrainsparsity(net, x, y, opts)
         disp(['epoch ' num2str(i) '/' num2str(opts.numepochs)]);
         kk = randperm(m);
         for l = 1 : numbatches
-            tic
+            %disp(l)
             batch_x = x(:, :, kk((l - 1) * opts.batchsize + 1 : l * opts.batchsize));
             batch_y = y(:,    kk((l - 1) * opts.batchsize + 1 : l * opts.batchsize));
 
@@ -19,7 +19,7 @@ function net = cnntrainsparsity(net, x, y, opts)
                 net.dict = zeros(size(net.fv,1),size(batch_y,1));
             end
             
-            disp('fullyconnectionsparsity')
+            %disp('fullyconnectionsparsity')
             fullyconnectionsparsity;
             
 %             net = cnnbp(net, batch_y);
@@ -29,7 +29,7 @@ function net = cnntrainsparsity(net, x, y, opts)
             else
                 net.rL(end + 1) = 0.99 * net.rL(end) + 0.01 * net.L;
             end
-            toc
+            
         end
     end
     
