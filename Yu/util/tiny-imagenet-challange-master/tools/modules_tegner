@@ -1,0 +1,3 @@
+module load cuda/7.0
+module load matlab/r2015b
+module load matconvnet/1.0
