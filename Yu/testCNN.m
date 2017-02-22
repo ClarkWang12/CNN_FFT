@@ -19,15 +19,19 @@ cnn.layers = {
     struct('type', 'c', 'outputmaps', 12, 'kernelsize', 5) %convolution layer
     struct('type', 's', 'scale', 2) %subsampling layer
 };
-cnn = cnnsetup(cnn, train_x, train_y);
+cnn = cnnsetupsparsity(cnn, train_x, train_y);
 % 10 labels correspond to 0-9 digits, and the final maps with 4*4*12 features per map to fully connected network
 opts.alpha = 1;
 opts.batchsize = 50;
 opts.numepochs = 1;
 
+
+
 tic
 cnn = cnntrainsparsity(cnn, train_x, train_y, opts); % cnntrain(cnn, train_x, train_y, opts);
 toc
+
+save('cnntrain_Result.mat', 'cnn');
 
 tic
 [er, bad] = cnnsparsityexamples(cnn, test_x, test_y); % cnntest(cnn, test_x, test_y);
