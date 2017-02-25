@@ -1,7 +1,7 @@
 # CNN_FFT
 CNN_FFT
 
-created by Clark, Yu
+Created by Qichao Wang, Hongchuan Yu, Bournemouth University
 
 This is about Convolutional Neural Network. 
 
